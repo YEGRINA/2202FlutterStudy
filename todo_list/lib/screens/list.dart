@@ -92,8 +92,8 @@ class _ListState extends State<List> {
             return InkWell(
               onLongPress: () {showAlertDialog(context);},
               child: Dismissible(
-                key: Key(item),
-                onDismissed: (direction) {
+                key: UniqueKey(),  // 중간 삭제해도 오류 안남!
+                onDismissed: (DismissDirection direction) {
                   setState(() {
                     items.removeAt(index);
                   });
