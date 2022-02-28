@@ -84,15 +84,17 @@ class _ListState extends State<List> {
   Widget checkboxBuilder(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
+          // scrollDirection: Axis.vertical,
+          // shrinkWrap: true,
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
             return InkWell(
-              onLongPress: () {showAlertDialog(context);},
+              onLongPress: () {
+                showAlertDialog(context);
+              },
               child: Dismissible(
-                key: UniqueKey(),  // 중간 삭제해도 오류 안남!
+                key: UniqueKey(), // 중간 삭제해도 오류 안남!
                 onDismissed: (DismissDirection direction) {
                   setState(() {
                     items.removeAt(index);
@@ -134,7 +136,11 @@ class _ListState extends State<List> {
             title: Text('메모를 입력하세요!'),
             content: TextField(),
             actions: [
-              TextButton(onPressed: () {Navigator.pop(context);}, child: Text('확인')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('확인')),
             ],
           );
         });
