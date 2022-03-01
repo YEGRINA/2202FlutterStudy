@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
-import '../screens/todo.dart';
+import '../screens/listPage.dart';
 
 class TableEventsExample extends StatefulWidget {
   @override
@@ -38,7 +38,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         _focusedDay = focusedDay;
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
-      Navigator.push(context, CupertinoPageRoute(builder: (context) => Todo()));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage()));
     }
   }
 
