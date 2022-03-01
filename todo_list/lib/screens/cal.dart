@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
+import '../screens/todo.dart';
 
 class TableEventsExample extends StatefulWidget {
   @override
@@ -36,6 +38,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         _focusedDay = focusedDay;
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => Todo()));
     }
   }
 
@@ -89,7 +92,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                   todayTextStyle: const TextStyle(
                     // 오늘의 날짜 글씨 꾸미기
                     // color: Colors.black45,
-                      fontSize: 20)
+                      fontSize: 20),
+                
               ),
               onDaySelected: _onDaySelected,
               onFormatChanged: (format) {
