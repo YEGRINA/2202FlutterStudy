@@ -23,6 +23,11 @@ int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
+// double width = 180.w, // 숫자 뒤에 *.w를 쓰면, designSize 기준 가로 길이가 된다.
+// double height = 300.h, // 숫자 뒤에 *.h를 쓰면, designSize 기준 세로 길이가 된다.
+// double textSize = 18.sp, // 숫자 뒤에 *.sp를 쓰면, designSize 기준 폰트 크기가 설정된다.
+
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 1, kToday.day-26);
-final kLastDay = DateTime(kToday.year, kToday.month + 10, kToday.day+4);
+final kFirstDay = DateTime(kToday.year, 1,1);
+final kLastDay = DateTime(kToday.year, 12, 31);
+

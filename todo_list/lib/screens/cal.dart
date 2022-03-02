@@ -4,6 +4,7 @@ import '../utils.dart';
 
 class TableEventsExample extends StatefulWidget {
   @override
+
   _TableEventsExampleState createState() => _TableEventsExampleState();
 }
 
@@ -53,9 +54,10 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+        padding: EdgeInsets.fromLTRB(5, 20, 5, 0),
         child: Column(
           children: [
+
             TableCalendar<dynamic>(
               // locale: 'ko-KR',  // 언어 설정, 기본은 영어임
               firstDay: kFirstDay,
@@ -63,23 +65,23 @@ class _TableEventsExampleState extends State<TableEventsExample> {
               focusedDay: _focusedDay,
               selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
               calendarFormat: _calendarFormat,
-              rowHeight: 94.0,
+              rowHeight: 90.0,
               daysOfWeekHeight: 30.0,
               eventLoader: _getEventsForDay,
               startingDayOfWeek: StartingDayOfWeek.sunday,
               headerStyle: const HeaderStyle(
-                titleTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                titleTextStyle: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
                 headerMargin: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 15),
               ),
               daysOfWeekStyle: const DaysOfWeekStyle(
-                weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
-                weekendStyle: TextStyle(color: Colors.red, fontSize: 17),
+                weekdayStyle: TextStyle(color: Colors.black, fontSize: 18),
+                weekendStyle: TextStyle(color: Colors.red, fontSize: 18),
               ),
               calendarStyle: CalendarStyle(
                   defaultTextStyle:
-                  TextStyle(color: Colors.black45, fontSize: 17),
+                  TextStyle(color: Colors.black45, fontSize: 18),
                   weekendTextStyle:
-                  TextStyle(color: Colors.red, fontSize: 17),
+                  TextStyle(color: Colors.red, fontSize: 18),
                   outsideDaysVisible: false, // 이전, 혹은 다음 달의 날짜 표시여부
                   todayDecoration: BoxDecoration(
                     // 오늘의 날짜 꾸미기
@@ -89,7 +91,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                   todayTextStyle: const TextStyle(
                     // 오늘의 날짜 글씨 꾸미기
                     // color: Colors.black45,
-                      fontSize: 20)
+                      fontSize: 21)
               ),
               onDaySelected: _onDaySelected,
               onFormatChanged: (format) {

@@ -1,7 +1,12 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'screens/cal.dart';
-// import 'pages/basics_example.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo_list/screens/cal.dart';
+
+
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
 }
@@ -9,14 +14,26 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'DIY Calendar',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StartPage(),
-    );
+    WidgetsFlutterBinding.ensureInitialized(); // 가로모드
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    return ScreenUtilInit(
+    designSize: Size(360,690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+      builder: () =>
+          MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'DIY Calendar',
+
+        builder: (context, child) {
+          ScreenUtil.setContext(context);
+          return MediaQuery(  // 폰트 사이즈 builder로 고정
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child!);
+         },
+            theme: ThemeData(primarySwatch: Colors.blue,),
+            home: StartPage(),
+      ));
   }
 }
 
