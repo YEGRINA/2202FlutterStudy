@@ -10,12 +10,10 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  // var items = <String>[];
-  final _categories = ['전체', '장보기', '학업'];
+  final _controller = TextEditingController();
+  final _categories = ['전체', '장보기', '학업', '단어장'];
   String selectedCategory = '전체';
-  // bool _isChecked = false;
   String text = '';
-  String memo = '';
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +53,7 @@ class _ListPageState extends State<ListPage> {
               children: [
                 Expanded(
                     child: TextField(
+                  controller: _controller,
                   onChanged: (String text) {
                     this.text = text;
                   },
@@ -63,8 +62,8 @@ class _ListPageState extends State<ListPage> {
                     // enter 이벤트 처리
                     if (text != '') {
                       setState(() {
-                        // items.add('$text');
-                        saveDB();
+                        saveTodo();
+                        _controller.clear(); // text clear
                       });
                     }
                   },
@@ -77,8 +76,8 @@ class _ListPageState extends State<ListPage> {
                   onPressed: () {
                     if (text != '') {
                       setState(() {
-                        // items.add('$text');
-                        saveDB();
+                        saveTodo();
+                        _controller.clear(); // text clear
                       });
                     }
                   },
@@ -99,86 +98,107 @@ class _ListPageState extends State<ListPage> {
         future: loadTodo(),
         builder: (context, snapshot) {
           List<Todo> todoes;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData) {  // hasData가 왜 안 먹혀ㅠㅠ
-          todoes = snapshot.data as List<Todo>;
-          // if (todoes.isEmpty) {
-          //   print('empty');
-          //   return Expanded(
-          //       child: Container(
-          //     child: null,
-          //   ));
-          // }
-          print('not empty');
-          return Expanded(
-            child: ListView.builder(
-                // scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
-                itemCount: todoes.length,
-                itemBuilder: (context, index) {
-                  Todo todo = todoes[index];
-                  bool _isChecked;
-                  if (todo.checked == 0) {
-                    _isChecked = false;
-                  } else {
-                    _isChecked = true;
-                  }
-                  return InkWell(
-                    onLongPress: () {
-                      showAlertDialog(context);
-                    },
-                    child: Dismissible(
-                      key: UniqueKey(), // 중간 삭제해도 오류 안남!
-                      onDismissed: (DismissDirection direction) {
-                        setState(() {
-                          // items.removeAt(index);
-                        });
+          if (snapshot.connectionState == ConnectionState.done) {
+            todoes = snapshot.data as List<Todo>;
+            return Expanded(
+              child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: todoes.length,
+                  itemBuilder: (context, index) {
+                    Todo todo = todoes[index];
+                    bool isChecked = false;
+                    if (todo.checked == 1) {
+                      isChecked = true;
+                    }
+                    return InkWell(
+                      onLongPress: () {
+                        showAlertDialog(context, todo);
                       },
-                      background: Card(
-                          child: Center(
-                            child: Text('D E L E T E',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30)),
-                          ),
-                          color: Colors.red),
-                      child: Card(
-                        child: CheckboxListTile(
-                          title: Text(todo.text),
-                          subtitle: Text(todo.memo),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: _isChecked,
-                          onChanged: (value) {
-                            setState(() {
-                              _isChecked = value!;
-                            });
-                          },
+                      child: Dismissible(
+                        key: UniqueKey(),
+                        onDismissed: (DismissDirection direction) {
+                          setState(() {
+                            // items.removeAt(index);
+                            deleteTodo(todo.date);
+                          });
+                        },
+                        background: Card(
+                            child: Center(
+                              child: Text('D E L E T E',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30)),
+                            ),
+                            color: Colors.red),
+                        child: Card(
+                          // memo 있을 때와 없을 때 위젯을 각각 생성
+                          child: todo.memo != ''
+                              ? CheckboxListTile(
+                                  title: Text(todo.text),
+                                  subtitle: Text(todo.memo),
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  value: isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isChecked = value!;
+
+                                      int checked = 0;
+                                      if (isChecked) {
+                                        checked = 1;
+                                      }
+                                      updateTodo(todo, todo.memo, checked);
+                                    });
+                                  },
+                                )
+                              : CheckboxListTile(
+                                  title: Text(todo.text),
+                                  controlAffinity:
+                                      ListTileControlAffinity.leading,
+                                  value: isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isChecked = value!;
+
+                                      int checked = 0;
+                                      if (isChecked) {
+                                        checked = 1;
+                                      }
+                                      updateTodo(todo, todo.memo, checked);
+                                    });
+                                  },
+                                ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-          );} else {
+                    );
+                  }),
+            );
+          } else {
             return Expanded(
                 child: Container(
-                  child: Text('no data'),
-                ));
+              child: null,
+            ));
           }
         });
   }
 
-  void showAlertDialog(BuildContext context) async {
+  void showAlertDialog(BuildContext context, Todo todo) async {
+    String memo = '';
     await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('메모를 입력하세요!'),
-            content: TextField(),
+            content: TextField(onChanged: (String text) {
+              memo = text;
+            }),
             actions: [
               TextButton(
                   onPressed: () {
+                    setState(() {
+                      updateTodo(todo, memo, todo.checked);
+                    });
                     Navigator.pop(context);
                   },
                   child: Text('확인')),
@@ -187,23 +207,68 @@ class _ListPageState extends State<ListPage> {
         });
   }
 
-  Future<void> saveDB() async {
+  Future<List<Todo>> loadTodo() async {
+    DBHelper sd = DBHelper();
+    List<Todo> allList = await sd.todoes();
+
+    // 모든 데이터 출력 (그냥 확인용)
+    for (int i = 0; i < allList.length; i++) {
+      print(allList[i].text +
+          ' ' +
+          allList[i].date +
+          ' ' +
+          allList[i].category +
+          ' ' +
+          allList[i].memo +
+          ' ' +
+          allList[i].checked.toString());
+    }
+    print('=======================');
+
+    // '전체' 카테고리이면 모든 데이터 반환
+    if (selectedCategory == '전체') {
+      return allList;
+    }
+
+    // 선택된 카테고리에 맞는 데이터 선별
+    List<Todo> list = [];
+    for (int i = 0; i < allList.length; i++) {
+      if (allList[i].category == selectedCategory) {
+        list.add(allList[i]);
+      }
+    }
+    return list;
+  }
+
+  Future<void> saveTodo() async {
     DBHelper sd = DBHelper();
 
     var fido = Todo(
         date: DateTime.now().toString(),
-        category: this.selectedCategory,
-        text: this.text,
-        memo: this.memo,
+        category: selectedCategory,
+        text: text,
+        memo: '',
         checked: 0 // 처음 todo를 추가할 때는 무조건 false
-        );
+    );
 
     await sd.insertTodo(fido);
-    print(await sd.todoes());
   }
 
-  Future<List<Todo>> loadTodo() async {
+  Future<void> deleteTodo(String date) async {
     DBHelper sd = DBHelper();
-    return await sd.todoes();
+    await sd.deleteTodo(date);
+  }
+
+  Future<void> updateTodo(Todo todo, String memo, int checked) async {
+    DBHelper sd = DBHelper();
+
+    var fido = Todo(
+        date: todo.date,
+        category: todo.category,
+        text: todo.text,
+        memo: memo,
+        checked: checked);
+
+    await sd.updateTodo(fido);
   }
 }
