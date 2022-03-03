@@ -6,6 +6,7 @@ import '../screens/listPage.dart';
 
 class TableEventsExample extends StatefulWidget {
   @override
+
   _TableEventsExampleState createState() => _TableEventsExampleState();
 }
 
@@ -56,56 +57,56 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+        padding: EdgeInsets.all(5),
         child: Column(
           children: [
-            TableCalendar<dynamic>(
-              // locale: 'ko-KR',  // 언어 설정, 기본은 영어임
-              firstDay: kFirstDay,
-              lastDay: kLastDay,
-              focusedDay: _focusedDay,
-              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              calendarFormat: _calendarFormat,
-              rowHeight: 94.0,
-              daysOfWeekHeight: 30.0,
-              eventLoader: _getEventsForDay,
-              startingDayOfWeek: StartingDayOfWeek.sunday,
-              headerStyle: const HeaderStyle(
-                titleTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-                headerMargin: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 15),
+            Expanded(
+              child: TableCalendar<dynamic>(
+                // locale: 'ko-KR',  // 언어 설정, 기본은 영어임
+                shouldFillViewport: true,
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                calendarFormat: _calendarFormat,
+                eventLoader: _getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.sunday,
+                headerStyle: const HeaderStyle(
+                  titleTextStyle: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
+                  headerMargin: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 15),
+                ),
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
+                  weekendStyle: TextStyle(color: Colors.red, fontSize: 17),
+                ),
+                calendarStyle: CalendarStyle(
+                    defaultTextStyle:
+                    TextStyle(color: Colors.black45, fontSize: 18),
+                    weekendTextStyle:
+                    TextStyle(color: Colors.red, fontSize: 18),
+                    outsideDaysVisible: false, // 이전, 혹은 다음 달의 날짜 표시여부
+                    todayDecoration: BoxDecoration(
+                      // 오늘의 날짜 꾸미기
+                        color: Colors.transparent,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.blueAccent, width: 1.5)),
+                    todayTextStyle: const TextStyle(
+                      // 오늘의 날짜 글씨 꾸미기
+                      // color: Colors.black45,
+                        fontSize: 21)
+                ),
+                onDaySelected: _onDaySelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
               ),
-              daysOfWeekStyle: const DaysOfWeekStyle(
-                weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
-                weekendStyle: TextStyle(color: Colors.red, fontSize: 17),
-              ),
-              calendarStyle: CalendarStyle(
-                  defaultTextStyle:
-                  TextStyle(color: Colors.black45, fontSize: 17),
-                  weekendTextStyle:
-                  TextStyle(color: Colors.red, fontSize: 17),
-                  outsideDaysVisible: false, // 이전, 혹은 다음 달의 날짜 표시여부
-                  todayDecoration: BoxDecoration(
-                    // 오늘의 날짜 꾸미기
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.blueAccent, width: 1.5)),
-                  todayTextStyle: const TextStyle(
-                    // 오늘의 날짜 글씨 꾸미기
-                    // color: Colors.black45,
-                      fontSize: 20),
-                
-              ),
-              onDaySelected: _onDaySelected,
-              onFormatChanged: (format) {
-                if (_calendarFormat != format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                }
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
             ),
           ],
         ),
