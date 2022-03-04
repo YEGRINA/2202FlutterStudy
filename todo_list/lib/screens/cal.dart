@@ -33,15 +33,16 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-      });
-      _selectedEvents.value = _getEventsForDay(selectedDay);
-      print(selectedDay.toString().split(' '));
-      Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString().split(' ')[0])));
-    }
+    // if (!isSameDay(_selectedDay, selectedDay)) {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+    });
+    _selectedEvents.value = _getEventsForDay(selectedDay);
+    print(selectedDay);
+    print(focusedDay);
+    Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString().split(' ')[0])));
+    // }
   }
 
   @override
