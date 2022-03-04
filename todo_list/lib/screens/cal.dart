@@ -41,7 +41,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     _selectedEvents.value = _getEventsForDay(selectedDay);
     print(selectedDay);
     print(focusedDay);
-    Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString().split(' ')[0])));
+    Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString())));
     // }
   }
 

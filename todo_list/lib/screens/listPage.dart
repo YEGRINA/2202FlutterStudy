@@ -229,7 +229,7 @@ class _ListPageState extends State<ListPage> {
     // 선택된 날짜에 맞는 데이터 선별
     List<Todo> datList = [];
     for (int i = 0; i < allList.length; i++) {
-      if (allList[i].date.split(' ')[0] == widget.selectedDay) {
+      if (allList[i].date.split(' ')[0] == widget.selectedDay.split(' ')[0]) {
         datList.add(allList[i]);
       }
     }
@@ -253,7 +253,7 @@ class _ListPageState extends State<ListPage> {
     DBHelper sd = DBHelper();
 
     var fido = Todo(
-        date: DateTime.now().toString(),
+        date: widget.selectedDay.split(' ')[0] + ' ' + DateTime.now().toString().split(' ')[1],
         category: selectedCategory,
         text: text,
         memo: '',

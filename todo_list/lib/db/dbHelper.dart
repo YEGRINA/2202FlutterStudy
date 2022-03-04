@@ -31,7 +31,7 @@ class DBHelper {
     await db.insert(
       TableName,
       todo.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      // conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
