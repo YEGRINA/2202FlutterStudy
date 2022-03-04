@@ -3,7 +3,8 @@ import 'package:todo_list/db/dbHelper.dart';
 import '../db/todo.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({Key? key}) : super(key: key);
+  ListPage({Key? key, required this.selectedDay}) : super(key: key);
+  final String selectedDay;
 
   @override
   _ListPageState createState() => _ListPageState();
@@ -225,16 +226,24 @@ class _ListPageState extends State<ListPage> {
     }
     print('=======================');
 
+    // 선택된 날짜에 맞는 데이터 선별
+    List<Todo> datList = [];
+    for (int i = 0; i < allList.length; i++) {
+      if (allList[i].date.split(' ')[0] == widget.selectedDay) {
+        datList.add(allList[i]);
+      }
+    }
+
     // '전체' 카테고리이면 모든 데이터 반환
     if (selectedCategory == '전체') {
-      return allList;
+      return datList;
     }
 
     // 선택된 카테고리에 맞는 데이터 선별
     List<Todo> list = [];
-    for (int i = 0; i < allList.length; i++) {
-      if (allList[i].category == selectedCategory) {
-        list.add(allList[i]);
+    for (int i = 0; i < datList.length; i++) {
+      if (datList[i].category == selectedCategory) {
+        list.add(datList[i]);
       }
     }
     return list;

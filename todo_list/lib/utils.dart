@@ -11,7 +11,8 @@ final kEvents = LinkedHashMap<DateTime, List<dynamic>>(
 
 // 여기를 바꾸면 됨! 여기가 데이터야
 final Map<DateTime, List> _events = {
-  DateTime.utc(2022, 1, 31): ['Event 1'],
+  DateTime.utc(2022, 1, 31): ['Event 1', 'Event2'],
+  DateTime.utc(2022, 1, 30): ['Event2'],
   DateTime.utc(2022, 2, 3): ['Event 1'],
   DateTime.utc(2022, 2, 13): ['Event 1'],
   DateTime.utc(2022, 2, 21): ['Event 1'],

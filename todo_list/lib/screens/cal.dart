@@ -39,23 +39,14 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         _focusedDay = focusedDay;
       });
       _selectedEvents.value = _getEventsForDay(selectedDay);
-      Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage()));
+      print(selectedDay.toString().split(' '));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString().split(' ')[0])));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'DIY Calendar',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: Container(
         padding: EdgeInsets.all(5),
         child: Column(
@@ -73,7 +64,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 startingDayOfWeek: StartingDayOfWeek.sunday,
                 headerStyle: const HeaderStyle(
                   titleTextStyle: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
-                  headerMargin: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 15),
+                  headerMargin: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 15),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
@@ -93,7 +84,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                     todayTextStyle: const TextStyle(
                       // 오늘의 날짜 글씨 꾸미기
                       // color: Colors.black45,
-                        fontSize: 21)
+                        fontSize: 18)
                 ),
                 onDaySelected: _onDaySelected,
                 onFormatChanged: (format) {
