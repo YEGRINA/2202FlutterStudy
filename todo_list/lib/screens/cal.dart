@@ -27,7 +27,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   @override
 
   /// DateTime 인자를 받아 List를 출력해주는 함수 -> 데이터 모델 list로 반환
-  List<dynamic> _getEventsForDay(DateTime day) {
+ List<dynamic> _getEventsForDay(DateTime day) {
     // Implementation example
     return kEvents[day] ?? [];
   }
