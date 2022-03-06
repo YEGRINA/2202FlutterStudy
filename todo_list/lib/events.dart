@@ -1,7 +1,7 @@
 import '../db/todo.dart';
 import 'db/dbHelper.dart';
 
-Future<List<Todo>> loadTodo() async {
+Future<Type> loadTodo() async {
   DBHelper sd = DBHelper();
   List<Todo> allEvents = await sd.todoes();
 
@@ -11,5 +11,6 @@ Future<List<Todo>> loadTodo() async {
       datList.add(allEvents[i]);
     }
   }
-  return datList;
+  return Todo;
+  // return datList;
 }
