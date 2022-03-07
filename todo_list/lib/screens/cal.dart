@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../utils.dart';
 import '../screens/listPage.dart';
+import 'package:todo_list/db/dbHelper.dart';
+import '../db/todo.dart';
+
+final kToday = DateTime.now();
+final kFirstDay = DateTime(kToday.year, 1,1);
+final kLastDay = DateTime(kToday.year, 12, 31);
 
 class TableEventsExample extends StatefulWidget {
   @override
@@ -16,23 +21,25 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   DateTime _focusedDay = DateTime.now(); // 오늘
   DateTime? _selectedDay;
   // late final EdgeInsets cellPadding;
+  late Map<DateTime, List> _events;  // 이벤트 있는 날짜 저장됨
 
   @override
   void initState() {
     super.initState();
+    _events = {};
+    getDates();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
-  @override
-
   /// DateTime 인자를 받아 List를 출력해주는 함수 -> 데이터 모델 list로 반환
   List<dynamic> _getEventsForDay(DateTime day) {
     // Implementation example
-    return kEvents[day] ?? [];
+    // return kEvents[day] ?? [];
+    return _events[day] ?? [];
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  Future<void> _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
     // if (!isSameDay(_selectedDay, selectedDay)) {
     setState(() {
       _selectedDay = selectedDay;
@@ -41,7 +48,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     _selectedEvents.value = _getEventsForDay(selectedDay);
     print(selectedDay);
     print(focusedDay);
-    Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString())));
+    await Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString())));
+    setState(() {getDates();});
     // }
   }
 
@@ -49,7 +57,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         child: Column(
           children: [
             Expanded(
@@ -61,8 +69,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 focusedDay: _focusedDay,
                 selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                 calendarFormat: _calendarFormat,
-                eventLoader: _getEventsForDay,
                 startingDayOfWeek: StartingDayOfWeek.sunday,
+                eventLoader: _getEventsForDay,
                 headerStyle: const HeaderStyle(
                   titleTextStyle: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
                   headerMargin: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 15),
@@ -104,5 +112,22 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         ),
       ),
     );
+  }
+
+  Future<void> getDates() async {
+    DBHelper sd = DBHelper();
+    List<Todo> allList = await sd.todoes();
+    _events = {};
+
+    String year, mon, day;
+    for (int i = 0; i < allList.length; i++) {
+      year = allList[i].date.split(' ')[0].split('-')[0];
+      mon = allList[i].date.split(' ')[0].split('-')[1];
+      day = allList[i].date.split(' ')[0].split('-')[2];
+      print('$year $mon $day');
+      _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] = ['Event'];
+    }
+    print(_events);
+    print('=======================');
   }
 }
