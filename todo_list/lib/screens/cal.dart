@@ -74,7 +74,6 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 calendarFormat: _calendarFormat,
                 startingDayOfWeek: StartingDayOfWeek.sunday,
                 eventLoader: _getEventsForDay,
-
                 calendarBuilders: CalendarBuilders(
                   dowBuilder: (context, day) {
                     switch (day.weekday) {
