@@ -17,12 +17,16 @@
 + 카테고리를 길게 눌러 삭제하세요
 <img src="https://user-images.githubusercontent.com/64945012/157261575-eafcac49-1197-41cf-b0fd-e2c47f8e0767.png" width="400" height="700"/>
 
-## 4. 메모 추가까지!
-<img src="https://user-images.githubusercontent.com/64945012/156700337-1a39b88e-7ff5-4c41-9d1d-7fb45db0af1e.png" width="400" height="700"/>
-<img src="https://user-images.githubusercontent.com/64945012/156700345-11f6442b-c40e-4775-9a87-260e1166d579.png" width="400" height="700"/>
+## 4. 더 쉽게 삭제!
+### 쉽게 스와이프하여 삭제하세요
+<img src="https://user-images.githubusercontent.com/64945012/157267960-0a50460d-46cf-44a1-93a8-d24eb196ce25.png" width="400" height="700"/>
 
-## 5. 더 뿌듯하게!  
+## 5. 메모 추가까지!  
+### 길게 눌러서 메모를 추가하세요
+<img src="https://user-images.githubusercontent.com/64945012/157266981-f6cd342e-55c7-47b6-ac48-7fe67c2b45ef.png" width="400" height="700"/>
+<img src="https://user-images.githubusercontent.com/64945012/157267027-a99d63c4-38d5-4018-9457-142c1d501cc6.png" width="400" height="700"/>
 
+## 6. 더 뿌듯하게!  
 ### 할 일을 다 하면 초록색으로 바뀌어요
 ### 하나씩 할 일을 해 나가면서 초록색으로 모두 채워보세요
 <img src="https://user-images.githubusercontent.com/64945012/157266164-060aff21-89b2-4ffe-b140-e6fc4587eea2.png" width="400" height="700"/>
