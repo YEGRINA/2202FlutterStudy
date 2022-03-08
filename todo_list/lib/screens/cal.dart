@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../screens/listPage.dart';
@@ -6,12 +7,11 @@ import 'package:todo_list/db/dbHelper.dart';
 import '../db/todo.dart';
 
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, 1,1);
+final kFirstDay = DateTime(kToday.year, 1, 1);
 final kLastDay = DateTime(kToday.year, 12, 31);
 
 class TableEventsExample extends StatefulWidget {
   @override
-
   _TableEventsExampleState createState() => _TableEventsExampleState();
 }
 
@@ -21,7 +21,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   DateTime _focusedDay = DateTime.now(); // 오늘
   DateTime? _selectedDay;
   // late final EdgeInsets cellPadding;
-  late Map<DateTime, List> _events;  // 이벤트 있는 날짜 저장됨
+  late Map<DateTime, List> _events; // 이벤트 있는 날짜 저장됨
 
   @override
   void initState() {
@@ -46,10 +46,14 @@ class _TableEventsExampleState extends State<TableEventsExample> {
       _focusedDay = focusedDay;
     });
     _selectedEvents.value = _getEventsForDay(selectedDay);
-    print(selectedDay);
-    print(focusedDay);
-    await Navigator.push(context, CupertinoPageRoute(builder: (context) => ListPage(selectedDay: selectedDay.toString())));
-    setState(() {getDates();});
+    await Navigator.push(
+        context,
+        CupertinoPageRoute(
+            builder: (context) =>
+                ListPage(selectedDay: selectedDay.toString())));
+    setState(() {
+      getDates();
+    });
     // }
   }
 
@@ -62,6 +66,21 @@ class _TableEventsExampleState extends State<TableEventsExample> {
           children: [
             Expanded(
               child: TableCalendar<dynamic>(
+                calendarBuilders:
+                    CalendarBuilders(singleMarkerBuilder: (context, date, _) {
+                  // print('color');
+                  // print(_events);
+                  return Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: listEquals(_events[date], ['true'])
+                          ? Colors.lightGreen
+                          : Colors.black,
+                    ),
+                    width: 10,
+                    height: 10,
+                  );
+                }),
                 // locale: 'ko-KR',  // 언어 설정, 기본은 영어임
                 shouldFillViewport: true,
                 firstDay: kFirstDay,
@@ -72,8 +91,12 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 startingDayOfWeek: StartingDayOfWeek.sunday,
                 eventLoader: _getEventsForDay,
                 headerStyle: const HeaderStyle(
-                  titleTextStyle: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
-                  headerMargin: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 15),
+                  titleTextStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold),
+                  headerMargin:
+                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 15),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
@@ -81,20 +104,20 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                 ),
                 calendarStyle: CalendarStyle(
                     defaultTextStyle:
-                    TextStyle(color: Colors.black45, fontSize: 18),
+                        TextStyle(color: Colors.black45, fontSize: 18),
                     weekendTextStyle:
-                    TextStyle(color: Colors.red, fontSize: 18),
+                        TextStyle(color: Colors.red, fontSize: 18),
                     outsideDaysVisible: false, // 이전, 혹은 다음 달의 날짜 표시여부
                     todayDecoration: BoxDecoration(
-                      // 오늘의 날짜 꾸미기
+                        // 오늘의 날짜 꾸미기
                         color: Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.blueAccent, width: 1.5)),
+                        border:
+                            Border.all(color: Color(0xFF5C6BC0), width: 1.5)),
                     todayTextStyle: const TextStyle(
-                      // 오늘의 날짜 글씨 꾸미기
-                      // color: Colors.black45,
-                        fontSize: 18)
-                ),
+                        // 오늘의 날짜 글씨 꾸미기
+                        // color: Colors.black45,
+                        fontSize: 18)),
                 onDaySelected: _onDaySelected,
                 onFormatChanged: (format) {
                   if (_calendarFormat != format) {
@@ -120,14 +143,32 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     _events = {};
 
     String year, mon, day;
+    Set set = Set();
     for (int i = 0; i < allList.length; i++) {
       year = allList[i].date.split(' ')[0].split('-')[0];
       mon = allList[i].date.split(' ')[0].split('-')[1];
       day = allList[i].date.split(' ')[0].split('-')[2];
-      print('$year $mon $day');
-      _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] = ['Event'];
+      // print('$year $mon $day');
+      // _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] = ['Event'];
+      if (!set.contains('$year $mon $day')) {
+        set.add('$year $mon $day');
+        _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] =
+            ['true'];
+      }
+      if (set.contains('$year $mon $day') && allList[i].checked == 0) {
+        _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] =
+            ['false'];
+      }
     }
-    print(_events);
-    print('=======================');
+
+    // print('getDate');
+    // print(_events);
+    // print('=======================');
+
+    // todo가 true -> false 일 때(반대도) 바로 반영이 안됨,, (getDates 끝나기 전에 build 실행되기 때문)
+    // 그래서 getDates에서 build 샐행함 (근데 이렇게 하는거 맞나?)
+    setState(() {
+      build(context);
+    });
   }
 }
