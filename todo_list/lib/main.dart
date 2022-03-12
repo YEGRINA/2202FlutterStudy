@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'screens/home.dart';
+import 'screens/cal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +11,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+       appBarTheme: AppBarTheme(
+         backgroundColor: Colors.white,
+         foregroundColor: Colors.black
+       )
       ),
-      home: const Home(),
+      home: TableEventsExample(),
     );
   }
 }
