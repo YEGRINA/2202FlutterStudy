@@ -8,7 +8,7 @@ import '../db/todo.dart';
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, 1, 1);
-final kLastDay = DateTime(kToday.year, 12, 31);
+final kLastDay = DateTime(2024, 12, 31);
 
 class TableEventsExample extends StatefulWidget {
   @override
@@ -61,11 +61,12 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Expanded(
               child: TableCalendar<dynamic>(
+                // 동그라미 색 다르게 하는거
                 calendarBuilders:
                     CalendarBuilders(singleMarkerBuilder: (context, date, _) {
                   // print('color');
@@ -96,7 +97,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                       fontSize: 23,
                       fontWeight: FontWeight.bold),
                   headerMargin:
-                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 15),
+                      EdgeInsets.only(top: 25, bottom: 15),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),

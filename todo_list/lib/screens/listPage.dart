@@ -22,6 +22,8 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text('$selectedCategory'),
         leading: IconButton(
           onPressed: () {
@@ -103,7 +105,9 @@ class _ListPageState extends State<ListPage> {
                     child: TextField(
                   controller: _controller,
                   onChanged: (String text) {
-                    this.text = text;
+                    // setState(() {
+                      this.text = text;
+                    // });
                   },
                   textInputAction: TextInputAction.go, // enter 이벤트 처리
                   onSubmitted: (value) {
@@ -130,6 +134,7 @@ class _ListPageState extends State<ListPage> {
                     }
                   },
                   icon: Icon(Icons.add_box),
+                  // color: text != '' ? Colors.blue : Colors.grey,
                   color: Colors.blue,
                   iconSize: 30,
                 )
