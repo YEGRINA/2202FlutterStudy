@@ -17,11 +17,10 @@ class TableEventsExample extends StatefulWidget {
 
 class _TableEventsExampleState extends State<TableEventsExample> {
   late final ValueNotifier<List<dynamic>> _selectedEvents;
-  CalendarFormat _calendarFormat = CalendarFormat.month; // 달력 형태,
+  late Map<DateTime, List> _events; // 이벤트 있는 날짜 저장됨
+  CalendarFormat _calendarFormat = CalendarFormat.month; // 달력 형태 -> 버튼으로
   DateTime _focusedDay = DateTime.now(); // 오늘
   DateTime? _selectedDay;
-  // late final EdgeInsets cellPadding;
-  late Map<DateTime, List> _events; // 이벤트 있는 날짜 저장됨
 
   @override
   void initState() {
@@ -34,13 +33,10 @@ class _TableEventsExampleState extends State<TableEventsExample> {
 
   /// DateTime 인자를 받아 List를 출력해주는 함수 -> 데이터 모델 list로 반환
   List<dynamic> _getEventsForDay(DateTime day) {
-    // Implementation example
-    // return kEvents[day] ?? [];
     return _events[day] ?? [];
   }
 
   Future<void> _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
-    // if (!isSameDay(_selectedDay, selectedDay)) {
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
@@ -96,8 +92,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                       color: Colors.black,
                       fontSize: 23,
                       fontWeight: FontWeight.bold),
-                  headerMargin:
-                      EdgeInsets.only(top: 25, bottom: 15),
+                  headerMargin: EdgeInsets.only(top: 25, bottom: 15),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
