@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.todo_list">
    <application
-        android:label="Todos"
-        android:name="${applicationName}"
-        android:icon="@mipmap/todo_icon">
+       android:name="${applicationName}"
+       android:icon="@mipmap/todo_icon"
+       android:label="Todos">
         <activity
             android:name=".MainActivity"
             android:exported="true"
