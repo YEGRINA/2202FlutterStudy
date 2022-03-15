@@ -112,5 +112,3 @@ class DBHelper {
     });
   }
 }
-
-//jae

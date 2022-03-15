@@ -5,12 +5,10 @@ import 'package:table_calendar/table_calendar.dart';
 import '../screens/listPage.dart';
 import 'package:todo_list/db/dbHelper.dart';
 import '../db/todo.dart';
-// import 'package:fslutter_localizations/flutter_localizations.dart';
-// import 'package:intl/intl.dart';
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, 1, 1);
-final kLastDay = DateTime(kToday.year, 12, 31);
+final kLastDay = DateTime(2024, 12, 31);
 
 class TableEventsExample extends StatefulWidget {
   @override
@@ -44,10 +42,6 @@ class _TableEventsExampleState extends State<TableEventsExample> {
       _focusedDay = focusedDay;
     });
     _selectedEvents.value = _getEventsForDay(selectedDay);
-
-    print(selectedDay);
-    print(focusedDay);
-
     await Navigator.push(
         context,
         CupertinoPageRoute(
@@ -63,12 +57,13 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Expanded(
               child: TableCalendar<dynamic>(
-             calendarBuilders:
+                // 동그라미 색 다르게 하는거
+                calendarBuilders:
                     CalendarBuilders(singleMarkerBuilder: (context, date, _) {
                   // print('color');
                   // print(_events);
@@ -97,8 +92,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                       color: Colors.black,
                       fontSize: 23,
                       fontWeight: FontWeight.bold),
-                  headerMargin:
-                      EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 15),
+                  headerMargin: EdgeInsets.only(top: 25, bottom: 15),
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(color: Colors.black, fontSize: 17),
@@ -115,7 +109,6 @@ class _TableEventsExampleState extends State<TableEventsExample> {
                         color: Colors.transparent,
                         shape: BoxShape.circle,
                         border:
-                            // Border.all(color: Colors.blueAccent, width: 1.5)),
                             Border.all(color: Color(0xFF5C6BC0), width: 1.5)),
                     todayTextStyle: const TextStyle(
                         // 오늘의 날짜 글씨 꾸미기
@@ -151,10 +144,6 @@ class _TableEventsExampleState extends State<TableEventsExample> {
       year = allList[i].date.split(' ')[0].split('-')[0];
       mon = allList[i].date.split(' ')[0].split('-')[1];
       day = allList[i].date.split(' ')[0].split('-')[2];
-      print('$year $mon $day');
-      _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] = [
-        'Event'
-      ];
       // print('$year $mon $day');
       // _events[DateTime.utc(int.parse(year), int.parse(mon), int.parse(day))] = ['Event'];
       if (!set.contains('$year $mon $day')) {

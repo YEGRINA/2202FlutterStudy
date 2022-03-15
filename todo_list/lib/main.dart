@@ -14,10 +14,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+       appBarTheme: AppBarTheme(
+         backgroundColor: Colors.white,
+         foregroundColor: Colors.black
+       )
       ),
       home: TableEventsExample(),
     );
   }
 }
-
-//jae
